@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<h1> Задачи </h1>
+
+<a id="add_todo" href="#">
+  <img src="https://img.icons8.com/material/24/000000/plus.png">
+</a>
+
+<table>
+  <thead >
+    <tr>
+      <br>
+      <br>
+      <br>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td style="font-size: 20px; text-transform: uppercase;"><%= project.title %></td>
+        <td>
+          <tr>
+          <td>
+        <% project.todos.each do |todo| %>
+          <ul>
+           <li> <%= todo.text %> </li>
+          </ul>
+        <% end %>
+        </td> 
+        </tr>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<div id="add_todo_blank" style="visibility: hidden;">
+<p style="font-size: 20px; text-transform: uppercase;">Новая задача</p>
+
+<%= form_for :todo, url: todos_path, :html => { :id => "my_form" } do |f| %>
+  <p>
+    <%= f.text_field(:text, id: 'txt') %>
+  </p>
+  <p>
+    <%= f.select :project_id, Project.all.collect { |p| [ p.title, p.id ] }, include_blank: false %>
+  </p>
+  <p>
+    <a href="javascript:{}" id="reset" >ОТМЕНА</a>
+    <a href="javascript:{}" onclick="document.getElementById('my_form').submit(); return false;">OK</a>
+  </p>
+  <p>
+  </p>
+<% end %>
+</div>
+<br>
+
+<script type="text/javascript">
+$("#add_todo").on("click", function () {
+    $("#add_todo_blank").attr("style", "visibility: visible");
+});
+
+$("#reset").on("click", function () {
+    $('#todo_project_id option').prop('selected', function() {
+        return this.defaultSelected;
+    });
+    document.getElementById("txt").value = "";
+    $("#add_todo_blank").attr("style", "visibility: hidden");
+});
+
+</script>
