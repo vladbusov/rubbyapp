@@ -1,70 +1,146 @@
-<p id="notice"><%= notice %></p>
+<meta charset="utf-8">
+<meta content="width=device-width" name="viewport">
 
-<h1> Задачи </h1>
 
-<a id="add_todo" href="#">
-  <img src="https://img.icons8.com/material/24/000000/plus.png">
-</a>
-
-<table>
-  <thead >
-    <tr>
-      <br>
-      <br>
-      <br>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @projects.each do |project| %>
-      <tr>
-        <td style="font-size: 20px; text-transform: uppercase;"><%= project.title %></td>
-        <td>
-          <tr>
-          <td>
-        <% project.todos.each do |todo| %>
-          <ul>
-           <li> <%= todo.text %> </li>
-          </ul>
-        <% end %>
-        </td> 
-        </tr>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-<div id="add_todo_blank" style="visibility: hidden;">
-<p style="font-size: 20px; text-transform: uppercase;">Новая задача</p>
-
-<%= form_for :todo, url: todos_path, :html => { :id => "my_form" } do |f| %>
-  <p>
-    <%= f.text_field(:text, id: 'txt') %>
-  </p>
-  <p>
-    <%= f.select :project_id, Project.all.collect { |p| [ p.title, p.id ] }, include_blank: false %>
-  </p>
-  <p>
-    <a href="javascript:{}" id="reset" >ОТМЕНА</a>
-    <a href="javascript:{}" onclick="document.getElementById('my_form').submit(); return false;">OK</a>
-  </p>
-  <p>
-  </p>
-<% end %>
+<div class="navbar navbar-dark bg-todo shadow-sm">
+  <div class="container d-flex justify-content-between">
+    <a href="#" class="navbar-brand d-flex align-items-center">
+      <div id="AlertDiv">
+        <h3>Задачи</h3>
+      </div>
+    </a>
+    <a id="add_todo" href="#">
+      <img src="assets/plus.png" id="plus">
+    </a>
+  </div>
 </div>
-<br>
 
-<script type="text/javascript">
-$("#add_todo").on("click", function () {
-    $("#add_todo_blank").attr("style", "visibility: visible");
-});
 
-$("#reset").on("click", function () {
-    $('#todo_project_id option').prop('selected', function() {
-        return this.defaultSelected;
+<div class="container"">
+  <div class="row padded">
+    <% @projects.each do |project| %>
+    <div class="card block_card col-lg-3 col-md-5" >
+      <div class="card-body">
+        <h5 class="card-title">
+          <span style="font-size: 20px; text-transform: uppercase;"><%= project.title %></span>
+        </h5>
+        <hr>
+        <p class="card-text">
+          <div class="demo-list clear"> 
+            <% project.todos.each do |todo| %>
+            <input tabindex="<%= todo.id %>" type="checkbox" id="checkbox_<%= todo.id %>" name="todo[isCompleted]">
+            <% if todo.isCompleted %>
+            <label for="checkbox_<%= todo.id %>" id="label_<%= todo.id %>" style="text-decoration: line-through">
+              <% else %>
+              <label for="checkbox_<%= todo.id %>" id="label_<%= todo.id %>" style="text-decoration: none">
+                <% end %>
+                <%= todo.text %>
+              </label>
+              <br>
+              <% end %>
+            </div>
+          </p>
+
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+
+
+  <div id="container">
+    <div id="exampleModal" class="reveal-modal">
+    </div>
+  </div>
+
+
+  <div id="add_todo_blank" style="visibility: hidden;">
+    <div id="Card" class="card-body">
+      <p class="card-title" style="font-size: 20px; text-transform: uppercase; text-align: center;">
+        Новая задача
+      </p>
+      <hr>
+      <%= form_for :todo, url: todos_path, :html => { :id => "my_form" } do |f| %>
+      <p>
+        <%= f.text_field(:text, id: 'txt', class: 'form-control') %>
+      </p>
+      <p>
+        <%= f.select :project_id, Project.all.collect { |p| [ p.title, p.id ] }, include_blank: false %>
+      </p>
+      <p>
+        <a class="btn btn-primary" href="javascript:{}" id="reset" >
+          ОТМЕНА
+        </a>
+        <a class="btn btn-primary" href="javascript:{}" onclick="document.getElementById('my_form').submit(); return false;">
+          OK
+        </a>
+      </p>
+      <p>
+      </p>
+      <% end %>
+    </div>
+  </div>
+
+
+
+
+
+  <script>
+    $(document).ready(function(){
+      var callbacks_list = $('.demo-callbacks ul');
+      $('.demo-list input').on('ifCreated ifClicked ifChanged ifChecked ifUnchecked ifDisabled ifEnabled ifDestroyed', function(event){
+        callbacks_list.prepend('<li><span>#' + this.id + '</span> is ' + event.type.replace('if', '').toLowerCase() + '</li>');
+      }).iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%'
+      });
     });
-    document.getElementById("txt").value = "";
-    $("#add_todo_blank").attr("style", "visibility: hidden");
-});
+  </script>
 
-</script>
+
+  <script type="text/javascript">
+
+    
+    <% @projects.each do |project| %>
+    <% project.todos.each do |todo| %>
+    <% if todo.isCompleted %>
+    $('#checkbox_<%= todo.id %>').iCheck('check');
+    <% end %>
+    $('#checkbox_<%= todo.id %>').on('ifChecked', function () {
+      $('#label_<%= todo.id %>').attr("style", "text-decoration: line-through");
+    });
+    $('#checkbox_<%= todo.id %>').on('ifUnchecked', function () {
+      $('#label_<%= todo.id %>').attr("style", "text-decoration: none");
+    });
+    <% end %>
+    <% end %>
+
+    $("select").attr("class","form-control");
+    $("#add_todo").on("click", function () {
+      $("#add_todo_blank").attr("style", "visibility: visible");
+      $("#container").attr("style","visibility: visible; display: block;");
+    });
+
+    $("#reset").on("click", function () {
+      $('#todo_project_id option').prop('selected', function() {
+        return this.defaultSelected;
+      });
+      document.getElementById("txt").value = "";
+      $("#add_todo_blank").attr("style", "visibility: hidden");
+      $("#container").attr("style","visibility: hidden; display: none;");
+
+      $(document).ready(function(){
+        $('input').iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+    increaseArea: '20%' // не обязательно
+  });
+      });
+
+    });
+
+
+
+  </script>

@@ -1,87 +1,22 @@
-body {
-  background-color: #fff;
-  color: #333;
-  margin-top: 33px;
-  margin-lef: 5px;
-  font-family: times new roman, arial, helvetica, sans-serif;
-  font-size: 16px;
-  font-stretch: expanded;
-  line-height: 10px;
+@font-face {
+  font-family: 'OpenSans-Light';
+  src: url("/assets/opensanslight-cf5f5184c1441a1660aa52526328e9d5c2793e77b6d8d3a3ad654bdb07ab8424.ttf?v=4.4.0") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-p, ol, ul, td {
-  font-family: times new roman, arial, helvetica, sans-serif;
-  font-size: 16px;
-  line-height: 10px;
-  font-stretch: expanded;
+
+@font-face {
+  font-family: 'OpenSans-Regular';
+  src: url("/assets/OpenSans-Regular-e64e508b2aa2880f907e470c4550980ec4c0694d103a43f36150ac3f93189bee.ttf?v=4.4.0") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-pre {
-  background-color: #eee;
-  padding: 10px;
-  font-size: 11px;
-}
 
-a {
-  color: #000;
-
-  &:visited {
-    color: #666;
-  }
-
-  &:hover {
-    color: #fff;
-    background-color: #000;
-  }
-}
-
-th {
-  padding-bottom: 5px;
-}
-
-td {
-  padding: 0 5px 7px;
-}
-
-div {
-  &.field, &.actions {
-    margin-bottom: 10px;
-  }
-}
-
-#notice {
-  color: green;
-}
-
-.field_with_errors {
-  padding: 2px;
-  background-color: red;
-  display: table;
-}
-
-#error_explanation {
-  width: 450px;
-  border: 2px solid red;
-  padding: 7px 7px 0;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-
-  h2 {
-    text-align: left;
-    font-weight: bold;
-    padding: 5px 5px 5px 15px;
-    font-size: 12px;
-    margin: -7px -7px 0;
-    background-color: #c00;
-    color: #fff;
-  }
-
-  ul li {
-    font-size: 12px;
-    list-style: square;
-  }
-}
-
-label {
-  display: block;
+@font-face {
+  font-family: 'OpenSans-Semibold';
+  src: url("/assets/OpenSans-Semibold-aa3b0ef53db12e3d45094030cac0e69d384e44cc5978643dd4390041cad546e2.ttf?v=4.4.0") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }

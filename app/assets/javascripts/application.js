@@ -11,3 +11,4 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require vendor/icheck.min.js
