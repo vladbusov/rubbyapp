@@ -28,6 +28,7 @@
         <p class="card-text">
           <div class="demo-list clear"> 
             <% project.todos.each do |todo| %>
+            <%= form_for :todo, url: todos_path, :html => { :id => "form" + todo.id.to_s } do |f| %>
             <input tabindex="<%= todo.id %>" type="checkbox" id="checkbox_<%= todo.id %>" name="todo[isCompleted]">
             <% if todo.isCompleted %>
             <label for="checkbox_<%= todo.id %>" id="label_<%= todo.id %>" style="text-decoration: line-through">
@@ -37,6 +38,7 @@
                 <%= todo.text %>
               </label>
               <br>
+              <% end %>
               <% end %>
             </div>
           </p>
@@ -102,16 +104,18 @@
 
   <script type="text/javascript">
 
-    
+
     <% @projects.each do |project| %>
     <% project.todos.each do |todo| %>
     <% if todo.isCompleted %>
     $('#checkbox_<%= todo.id %>').iCheck('check');
     <% end %>
     $('#checkbox_<%= todo.id %>').on('ifChecked', function () {
+      document.getElementById('form<%= todo.id %>').submit();
       $('#label_<%= todo.id %>').attr("style", "text-decoration: line-through");
     });
     $('#checkbox_<%= todo.id %>').on('ifUnchecked', function () {
+      document.getElementById('form<%= todo.id %>').submit();
       $('#label_<%= todo.id %>').attr("style", "text-decoration: none");
     });
     <% end %>
